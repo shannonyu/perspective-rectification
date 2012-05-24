@@ -1,10 +1,7 @@
+
+%Classe line2D: representa uma linha do tipo ax + b
+
 classdef line2D
-    
-    %propriedades:
-    % a e b da propriedade de linha ax + b;
-    % comp são os compontentes que compões a linha
-    %
-    
     properties
         a = 0;
         b = 0;
@@ -13,9 +10,9 @@ classdef line2D
     
     methods
         function line = line2D(comps)
-           if nargin > 0 % Support calling with 0 arguments
+           if nargin > 0 
               line.comps = comps;
-              %definir a e b a partir dos componentes
+              %TODO: definir a e b a partir dos componentes
               a = 1;
               b = 1;
            end 
