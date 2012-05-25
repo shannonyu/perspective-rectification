@@ -1,10 +1,8 @@
 
 
-function [ horizonalLines verticalLines ] = StraightLineDetection( grayImage )
+function [horizontalLines verticalLines] = StraightLineDetection( imaLabeled, props, numComponents, grayImage )
 
-if nargin <= 0
-    error('Missed parameter GrayImage on StraightLineDetection');
-end
+
 
 
 end
