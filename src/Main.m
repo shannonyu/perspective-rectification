@@ -4,17 +4,12 @@ clear all;
 testImage = 'C:\Users\robson\Desktop\pi_prj\svn\base\iPhone4\IMG_1257.JPG';
 
 con = 8;
-RGBImage = imread(testImage);
-GrayImage = rgb2gray(RGBImage);
-OtsuThreshold = graythresh(GrayImage); % otsu (mudar para blockOtsu)
-BitonalImage = im2bw(GrayImage,OtsuThreshold);
-EdgeImage = edge(GrayImage,'canny');
+edgeAlg = 'canny';
+prop = 'BoundingBox';
 
-%imshow(imaEdge);
+[rgbImage grayImage bwImage labelledImage props numComps] = PreProcessImage(testImage, con, edgeAlg, prop);
 
-[LabelledImage numComps] = bwlabel(EdgeImage, con);
-Props = regionprops(LabelledImage, 'BoundingBox');
+[horizontalLines verticalLines] = StraightLineDetection( labelledImage, props, numComps, grayImage );
 
-[horizontalLines verticalLines] = StraightLineDetection( LabelledImage, Props, numComps, GrayImage);
 %Vanishing Point Detections
 HorizontalTextLineDetection(LabelledImage, Props, numComps, GrayImage, verticalLines);
