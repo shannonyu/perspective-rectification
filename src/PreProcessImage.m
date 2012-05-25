@@ -1,6 +1,6 @@
 function [rgbImage grayImage bwImage labelledImage props numComps] = PreProcessImage( fileName, con, edgeAlg, prop )
 
-rgbImage = imread(testImage);
+rgbImage = imread(fileName);
 grayImage = rgb2gray(rgbImage);
 OtsuThreshold = graythresh(grayImage); % otsu (mudar para blockOtsu)
 bwImage = im2bw(grayImage,OtsuThreshold);

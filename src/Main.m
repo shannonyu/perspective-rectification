@@ -1,7 +1,7 @@
 clc;
 clear all;
 
-testImage = 'C:\Users\robson\Desktop\pi_prj\svn\base\iPhone4\IMG_1257.JPG';
+testImage = '..\base\iPhone4\IMG_1257.JPG';
 
 con = 8;
 edgeAlg = 'canny';
