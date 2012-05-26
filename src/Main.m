@@ -1,14 +1,19 @@
+%% Clear all
+
 clc;
 clear all;
 close all;
 
-testImage = '..\base\iPhone4\IMG_1255.JPG';
+%% Attributes
 
+testImage = '..\base\iPhone4\IMG_1255.JPG';
 debug = 1;
 con = 8;
 edgeAlg = 'canny';
 prop = 'BoundingBox';
 scale = 0.5;
+
+%% Flow
 
 [rgbImage grayImage bwImage labelledImage props numComps] = PreProcessImage(testImage, con, edgeAlg, prop, scale);
 
