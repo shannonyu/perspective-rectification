@@ -10,13 +10,14 @@ testImage = '..\base\iPhone4\IMG_1255.JPG';
 debug = 1;
 con = 8;
 edgeAlg = 'canny';
-prop = 'BoundingBox';
+prop1 = 'BoundingBox'; 
+prop2 = 'Eccentricity';
 scale = 0.5;
 
 %% Flow
 
 % Preprocessamento
-[rgbImage grayImage bwImage edgeImage labelledImage props numComps] = PreProcessImage(testImage, con, edgeAlg, prop, scale);
+[rgbImage grayImage bwImage edgeImage labelledImage props numComps] = PreProcessImage(testImage, con, edgeAlg, prop1, prop2, scale);
 
 % Descomentar para salvar as variáveis e dá o load dentro da função para economizar tempo
 %save workspaceWorkspace.mat

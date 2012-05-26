@@ -1,5 +1,5 @@
 
-function [rgbImage grayImage bwImage edgeImage labelledImage props numComps] = PreProcessImage( fileName, con, edgeAlg, prop, scale )
+function [rgbImage grayImage bwImage edgeImage labelledImage props numComps] = PreProcessImage( fileName, con, edgeAlg, prop1, prop2, scale )
 
 rgbImage = imread(fileName);
 rgbImage = imresize(rgbImage, scale);
@@ -11,7 +11,7 @@ edgeImage = edge(grayImage,edgeAlg);
 %imshow(imaEdge);
 
 [labelledImage numComps] = bwlabel(edgeImage, con);
-props = regionprops(labelledImage, prop);
+props = regionprops(labelledImage, prop1, prop2);
 
 end
 
