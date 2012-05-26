@@ -1,4 +1,4 @@
-function [horizontalLines verticalLines] = HorizontalTextLineDetection( imaLabeled, props, numComponents, grayImage, verticalLines)
+function [horizontalLines verticalLines] = HorizontalTextLineDetection( labelledImage, props, numComponents, grayImage, verticalLines)
 
 
 
