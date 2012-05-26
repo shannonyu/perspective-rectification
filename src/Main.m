@@ -10,7 +10,7 @@ scale = 0.5;
 
 [rgbImage grayImage bwImage labelledImage props numComps] = PreProcessImage(testImage, con, edgeAlg, prop, scale);
 
-[horizontalLines verticalLines] = StraightLineDetection( labelledImage, props, numComps, grayImage );
+[horizontalLines verticalLines] = StraightLineDetection( labelledImage, props, numComps, grayImage, bwImage );
 
 %Vanishing Point Detections
 HorizontalTextLineDetection(LabelledImage, Props, numComps, GrayImage, verticalLines);

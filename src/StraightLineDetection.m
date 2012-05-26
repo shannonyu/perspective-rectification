@@ -1,4 +1,4 @@
-function [horizontalLines verticalLines] = StraightLineDetection( imaLabeled, props, numComponents, grayImage )
+function [horizontalLines verticalLines] = StraightLineDetection( imaLabeled, props, numComponents, grayImage, bwImage )
 
 
 
