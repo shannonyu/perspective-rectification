@@ -18,8 +18,14 @@ scale = 0.5;
 % Preprocessamento
 [rgbImage grayImage bwImage labelledImage props numComps] = PreProcessImage(testImage, con, edgeAlg, prop, scale);
 
-subplot(1,2,1), imshow(grayImage);
-subplot(1,2,2), imshow(bwImage);
+% Descomentar para salvar as variáveis e dá o load dentro da função para economizar tempo
+%save workspaceWorkspace.mat
+
+% Debug
+if debug == 1
+    subplot(1,2,1), imshow(grayImage);
+    subplot(1,2,2), imshow(bwImage);
+end
 
 % First Stage
 [horizontalLines verticalLines] = StraightLineDetection( labelledImage, props, numComps, grayImage, bwImage );
