@@ -6,7 +6,7 @@ if nargin == 0
 end
 
 debugAllComponents = 0;
-debugGoodComponents = 0;
+debugGoodComponents = 1;
 debugoutputpath = 'C:\dev\perspective\svn\src\temp\';
 
 % n de linhas e colunas
@@ -14,8 +14,8 @@ debugoutputpath = 'C:\dev\perspective\svn\src\temp\';
 
 % tamanho mínimo de altura de largura para uma componente entrar no fluxo
 % (default 10%)
-minHeight = nRows * 0.1;
-minWidth = nCols * 0.1;
+minHeight = nRows * 0.05;
+minWidth = nCols * 0.051;
 
 % inicializa array das componentes
 goodComps = [];
