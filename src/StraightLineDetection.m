@@ -1,4 +1,4 @@
-function [horizontalLines verticalLines newEdgeImage linesImage] = StraightLineDetection( labelledImage, props, numComps, grayImage, bwImage, edgeImage )
+function [horizontalLines verticalLines newEdgeImage lines linesImage] = StraightLineDetection( labelledImage, props, numComps, grayImage, bwImage, edgeImage )
 
 horizontalLines = [];
 verticalLines = [];
@@ -31,7 +31,7 @@ WorseEccentricity = 0.80;
 goodComps = [];
 badComps = [];
 newEdgeImage = zeros(nRows, nCols);
-
+disp('Iniciando filtragem dos componentes conexos');
 % Find long connected components
 for comp = 1:numComps
     
@@ -63,12 +63,14 @@ for comp = 1:numComps
     
 end 
 
+disp('Construindo imagem com os componentes filtrados');
 for i = 1:length(badComps)
     comp = badComps(i);
     newEdgeImage(newEdgeImage == comp) = 0;
 end
 
-[verticalLines horizontalLines linesImage] = DetectLinesHough(newEdgeImage);
+disp('Iniciando detecção de linhas pela transformada de hough');
+[verticalLines horizontalLines lines linesImage] = DetectLinesHough(newEdgeImage);
 
 if debugCleanedImage == 1
     imwrite(newEdgeImage,[debugoutputpath 'CleanedImage.tif'] ,'tif');
