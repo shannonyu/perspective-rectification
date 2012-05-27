@@ -1,4 +1,4 @@
-function [ verticalLines horizontalLines debugImage] = DetectLinesHough( bwImage )
+function [ verticalLines horizontalLines lines debugImage] = DetectLinesHough(bwImage)
 
 verticalLines = [];
 horizontalLines = [];
