@@ -1,4 +1,4 @@
-function [horizontalLines verticalLines newEdgeImage] = StraightLineDetection( labelledImage, props, numComps, grayImage, bwImage, edgeImage )
+function [horizontalLines verticalLines newEdgeImage linesImage] = StraightLineDetection( labelledImage, props, numComps, grayImage, bwImage, edgeImage )
 
 horizontalLines = [];
 verticalLines = [];
@@ -67,6 +67,8 @@ for i = 1:length(badComps)
     comp = badComps(i);
     newEdgeImage(newEdgeImage == comp) = 0;
 end
+
+[verticalLines horizontalLines linesImage] = DetectLinesHough(newEdgeImage);
 
 if debugCleanedImage == 1
     imwrite(newEdgeImage,[debugoutputpath 'CleanedImage.tif'] ,'tif');
