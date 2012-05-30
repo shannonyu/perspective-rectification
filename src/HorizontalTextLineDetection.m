@@ -43,7 +43,7 @@ function [horizontalLines verticalLines] =...
             currentBlock = 1-bwImage(vStart:vEnd,...
                     hStart:hEnd);
             %debug    
-            imshow(currentBlock);
+            %imshow(currentBlock);
                 
             [blockRows blockCols] = size(currentBlock);
             
