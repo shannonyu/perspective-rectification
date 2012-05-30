@@ -82,6 +82,7 @@ if saveImages
     disp([out2 ' ok']);
 end
 %Vanishing Point Detection
+[H V] = VPDetection(lines, bwImage);
 
 %Second Stage
 %HorizontalTextLineDetection(LabelledImage, Props, numComps, GrayImage, verticalLines);
