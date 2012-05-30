@@ -52,9 +52,6 @@ disp(['Iniciando Preprocessamento']);
 [rgbImage grayImage bwImage edgeImage labelledImage props numComps] = PreProcessImage(filename, con, edgeAlg, prop1, prop2, scale);
 disp(['Preprocessamento ok']);
 
-% Descomentar para salvar as variáveis e dá o load dentro da função para economizar tempo
-% save workspaceWorkspace.mat
-
 % Debug
 if debug == 1
     subplot(2,2,1), imshow(grayImage);
@@ -81,6 +78,10 @@ if saveImages
     imwrite(grayImage, out2,'jpg');
     disp([out2 ' ok']);
 end
+
+% Descomentar para salvar as variáveis e dá o load dentro da função para economizar tempo
+% save workspaceWorkspace.mat
+
 %Vanishing Point Detection
 [H V] = VPDetection(lines, bwImage);
 
