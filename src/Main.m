@@ -11,7 +11,6 @@ disp('Limpando memória..');
 
 %% Attributes
 dirImage = '..\base\iPhone4\';
-filename = '..\base\iPhone4\IMG_1255.JPG';
 output = '../output/';
 debug = 0;
 con = 8;
@@ -41,7 +40,7 @@ len = length(tifffiles);
 
 disp(['Achou ' int2str(len) ' imagens']);
 
-for k = 1:len
+for k = 2:len
 
 disp(' ');
 disp(['Iniciando processamento de ' tifffiles(k).name '...']);
@@ -88,7 +87,16 @@ end
 [Hx Hy Vx Vy] = VPDetection(lines, bwImage, edgeImage);
 %save workspaceWorkspace.mat
 
-transformedImage = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, scale);
+if ~isempty(Hx) && ~isempty(Hy)
+    transformedImage = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, scale);
+
+    disp(['Salvando Saída:']);
+    out3 = regexprep([output tifffiles(k).name], '.JPG', '_t.tif') ;
+    imwrite(transformedImage, out3,'tif');
+    disp([out2 ' ok']);
+else
+     disp(['Não achou VP']);
+end
 
 %Second Stage
 %HorizontalTextLineDetection(LabelledImage, Props, numComps, GrayImage, verticalLines);

@@ -65,7 +65,7 @@ while (insertH || insertV) && it < 50
         end
     end
     
-    if insertV || insertH
+    if isHorizontal
         s = struct('alpha',a,'beta', b,'weight',w, 'lineLen',value);
         lines = [lines; s];
     end

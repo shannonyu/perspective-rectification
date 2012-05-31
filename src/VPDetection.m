@@ -9,13 +9,21 @@ Vy = Inf;
 if (nP > 0)
     clear clusters;
     clear idx;
+    
+    if(nP >= 10)
+        
     nClusters = max(ceil(log(nP)),10);
     nClusters = min(nClusters, nP);
     [idx, clusters] = kmeans(intersections, nClusters, 'Replicates',...
         ceil(nP/2), 'EmptyAction', 'drop');
     
+        indirectProfit = VPIndirect(idx, clusters);
+    else
+        clusters = intersections;
+        indirectProfit = ones(nP, 1);
+    end
+    
     %% Vanishing point detection and selection
-    indirectProfit = VPIndirect(idx, clusters);
 
     directProfit = VPDirect(clusters, lines, bwImage, edgeImage); % menor eh melhor
 
@@ -36,13 +44,26 @@ if (nP > 0)
     HxDirect = clusters(index,1);
     HyDirect = clusters(index,2);
 
-    Hx = (HxIndirect + HxDirect)/2;
-    Hy = (HyIndirect + HyDirect)/2;
+    d = euclideanDist(HxIndirect, HyIndirect, HxDirect, HyDirect);
+    
+    if(d > 1000)
+        Hx = HxIndirect;
+        Hy = HyIndirect;
+    else
+        Hx = (HxIndirect + HxDirect)/2;
+        Hy = (HyIndirect + HyDirect)/2;
+    end
 else
     Hx = [];
     Hy = [];    
 end
 
 
+
+end
+
+function d = euclideanDist(x1,y1,x2,y2)
+
+    d = sqrt( (x1-x2)^2 + (y1-y2)^2 );
 
 end

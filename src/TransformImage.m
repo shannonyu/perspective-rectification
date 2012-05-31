@@ -71,15 +71,38 @@ C = [l(7:8)' 1];
 
 transformedImage = ones(nRows * 2, nCols*2);
 
-
+minimoi = Inf;
+minimoj = Inf;
 
 for x = 1:nRows
     for y = 1:nCols
         if(bwImage(x, y) == 0)
             t= A*[x;y;1]/(C*[x;y;1]);
-            i =  floor(t(1) + 1000);
-            j = floor(t(2) + 1000);
-            transformedImage(i,j) = 0;
+            minimoi =  min(floor(t(1)), minimoi);
+            minimoj = min(floor(t(2)), minimoj);
+        end
+    end
+end
+if minimoi < 0
+    minimoi = norm(minimoi) + 1;
+else
+    minimoi = 0;
+end
+
+if minimoj <= 0
+    minimoj = norm(minimoj) + 1;
+else
+    minimoj = 0;
+end
+
+for x = 1:nRows
+    for y = 1:nCols
+        if(bwImage(x, y) == 0)
+            t= A*[x;y;1]/(C*[x;y;1]);
+            i =  floor(t(1));
+            j = floor(t(2));
+            
+            transformedImage(i + minimoi, j + minimoj) = 0;
         end
     end
 end
