@@ -1,4 +1,4 @@
-function [iCount iPoints] = CalculateLineIntersections(lines)
+function [iCount iPoints] = CalculateLineIntersections(lines, nRows, nCols)
 %Calculates line intersections
 %   [iCount iPoints] = CalculateIntersections(lines)
 
@@ -15,9 +15,12 @@ function [iCount iPoints] = CalculateLineIntersections(lines)
             if (i ~= j && ai ~= aj)
                 x = (bj - bi)/(ai - aj);
                 y = ai*x + bi;
-                
-                iCount = iCount + 1;
-                iPoints(iCount, :) = [x y];
+                if(~isinf(x) && ~isinf(y) && ~isnan(x) && ~isnan(y))
+                    if( ~(x > 0 && x < nCols && y > 0 && y < nRows) ) %aceito pontos apenas fora da página
+                        iCount = iCount + 1;
+                        iPoints(iCount, :) = [x y];
+                    end
+                end
             end
         end
     end
