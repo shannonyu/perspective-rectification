@@ -8,7 +8,7 @@ if (nP > 0)
 end
 
 %% Vanishing point detection and selection
-[Hindirect Vindirect] = VPDetectionDirect(idx, clusters);
+indirectProfit = VPIndirect(idx, clusters);
 
 %[Hdirect Vdirect] = VPDetectionIndirect(clusters, lines, bwImage);
 
