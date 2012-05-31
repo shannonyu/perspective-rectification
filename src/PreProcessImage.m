@@ -4,11 +4,9 @@ function [rgbImage grayImage bwImage edgeImage labelledImage props numComps] = P
 rgbImage = imread(fileName);
 rgbImage = imresize(rgbImage, scale);
 grayImage = rgb2gray(rgbImage);
-% OtsuThreshold = graythresh(grayImage); % otsu (mudar para blockOtsu)
-% bwImage = im2bw(grayImage,OtsuThreshold);
 bwImage = BlockOtsu( grayImage );
-edgeImage = edge(grayImage,edgeAlg);
-%imshow(imaEdge);
+edgeImage = edge(grayImage./2,edgeAlg, [0.01 0.15], 4);
+imshow(edgeImage);
 
 [labelledImage numComps] = bwlabel(edgeImage, con);
 props = regionprops(labelledImage, prop1, prop2);

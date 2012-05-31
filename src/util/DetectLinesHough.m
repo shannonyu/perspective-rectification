@@ -27,7 +27,7 @@ it = 1;
 lines = [];
 insertH = 1;
 insertV = 1;
-wThreshold = 0.2;
+wThreshold = 0.1;
 while (insertH || insertV) && it < 50 
     [value index] = max(H(:));
     

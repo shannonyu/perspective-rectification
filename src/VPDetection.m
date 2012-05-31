@@ -10,7 +10,8 @@ if (nP > 0)
     clear clusters;
     clear idx;
     nClusters = max(ceil(log(nP)),10);
-    [idx, clusters] = kmeans(intersections, nClusters, 'replicates', ceil(nP/2));
+    [idx, clusters] = kmeans(intersections, nClusters, 'Replicates',...
+        ceil(nP/2), 'EmptyAction', 'drop');
     
     %% Vanishing point detection and selection
     indirectProfit = VPIndirect(idx, clusters);
