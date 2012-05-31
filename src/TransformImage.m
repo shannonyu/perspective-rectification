@@ -69,7 +69,7 @@ l = inv(B' * B) * B' * D;
 A = reshape([l(1:6)' 0 0 1 ],3,3)';
 C = [l(7:8)' 1];
 
-image = ones(nRows * 2, nCols*2);
+transformedImage = ones(nRows * 2, nCols*2);
 
 
 
@@ -84,9 +84,9 @@ for x = 1:nRows
     end
 end
 
-imshow(image);
-imwrite(image, 'C:\dev\perspective\svn\src\temp\nasceu.tif','tif');
-imwrite(bwImage, 'C:\dev\perspective\svn\src\temp\isto.tif','tif');
+% imshow(image);
+% imwrite(image, 'C:\dev\perspective\svn\src\temp\nasceu.tif','tif');
+% imwrite(bwImage, 'C:\dev\perspective\svn\src\temp\isto.tif','tif');
 
 end
 
