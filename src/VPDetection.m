@@ -18,8 +18,10 @@ if (nP > 0)
     %H = 0.5 * Hindirect + 0.5 * Hdirect;
     %V = 0.5 * Vindirect + 0.5 * Vdirect;
 
-    H = 0.5 * Hindirect + 0.5 * Hdirect;
-    V = 0.5 * Vindirect + 0.5 * Vdirect;
+%     H = 0.5 * Hindirect + 0.5 * Hdirect;
+%     V = 0.5 * Vindirect + 0.5 * Vdirect;
+
+    [value index] = max(indirectProfit);
 
     HxIndirect = clusters(index,1);
     HyIndirect = clusters(index,2);
