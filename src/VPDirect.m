@@ -39,18 +39,24 @@ end
 
 len = length(inters);
 
-for i = 1:len
+for w = 1:len
 	inter = inters(109);
     x = inter.x;
     y = inter.y;
     
-    delta_theta = FindAngleOnBoudingCircle(x,y,bwImage);   
-    
+   delta_theta = FindAngleOnBoudingCircle(x,y,bwImage);   
+
+   for i = 1:nRows
+       for j = 1:nCols
+           
+       end
+   end
+   
 end
 
 end
 
-function theta = FindAngleOnBoudingCircle(x,y,bwImage)
+function delta_theta = FindAngleOnBoudingCircle(x,y,bwImage)
 
     [nRows nCols] = size(bwImage);
     
@@ -60,7 +66,10 @@ function theta = FindAngleOnBoudingCircle(x,y,bwImage)
     d = sqrt( (centroX - x)^2 + (centroY - y)^2 );
     r = sqrt( (nCols/2)^2 + (nRows/2)^2 );
     
-    theta = asind(r/d) * 2;
+    delta_theta = asind(r/d) * 2;
+    
+    
+    
 
 end
 
