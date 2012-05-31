@@ -1,4 +1,4 @@
-function transformedImage =  TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, scale)
+function [transformedImage transformedImageRGB] = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, rgbImageOriginalSize, scale)
 %load workspaceWorkspace.mat
 
 
@@ -33,23 +33,40 @@ cy = cx * tand(theta)  + b1;
 dx = V2;
 dy = dx * tand(theta)  + b1;
 
-drawquadrilate(ax, ay, bx, by, cx, cy, dx, dy);
+ab =  euclideanDist(ax,ay,bx,by);
+ac =  euclideanDist(ax,ay,cx,cy);
+bd =  euclideanDist(bx,by,dx,dy);
+dc =  euclideanDist(dx,dy,cx,cy);
 
-Xmin = min([ax, bx, cx, dx]);
-Ymin = min([ay, by, cy, dy]);
+if(ab > 1000 || ac > 1000 || db > 1000 || dc > 1000)
+    transformedImage = [];
+    transformedImageRGB = [];
+else
 
-Xmax = max([ax, bx, cx, dx]);
-Ymax = max([ay, by, cy, dy]);
+    %drawquadrilate(ax, ay, bx, by, cx, cy, dx, dy);
 
-transformedImage = transform(Xmin/scale, Ymin/scale, Xmax/scale,  Ymax/scale, ax/scale, ay/scale, bx/scale, by/scale, cx/scale, cy/scale, dx/scale, dy/scale, bwImageOriginalSize);
+    Xmin = min([ax, bx, cx, dx]);
+    Ymin = min([ay, by, cy, dy]);
+
+    Xmax = max([ax, bx, cx, dx]);
+    Ymax = max([ay, by, cy, dy]);
+
+    [transformedImage transformedImageRGB] = transform(Xmin/scale, Ymin/scale, Xmax/scale,  Ymax/scale, ax/scale, ay/scale, bx/scale, by/scale, cx/scale, cy/scale, dx/scale, dy/scale, bwImageOriginalSize, rgbImageOriginalSize);
+end
+end
+
+
+function d = euclideanDist(x1,y1,x2,y2)
+
+    d = sqrt( (x1-x2)^2 + (y1-y2)^2 );
 
 end
 
-function transformedImage = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImage)
+function [transformedImage transformedImageRGB] = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImageOriginalSize, rgbImageOriginalSize)
 
 % hold off
 % axis([Ymin*1.5 Ymax*1.5 Xmin*1.5 Xmax*1.5]);
-[nRows nCols] = size(bwImage);
+[nRows nCols] = size(bwImageOriginalSize);
 
 X = [ay; cy; dy; by;];
 Y = [ax; cx; dx; bx];
@@ -70,17 +87,18 @@ A = reshape([l(1:6)' 0 0 1 ],3,3)';
 C = [l(7:8)' 1];
 
 transformedImage = ones(nRows * 2, nCols*2);
+transformedImageRGB = ones(nRows * 2, nCols*2, 3);
 
 minimoi = Inf;
 minimoj = Inf;
 
 for x = 1:nRows
     for y = 1:nCols
-        if(bwImage(x, y) == 0)
+        %if(bwImage(x, y) == 0)
             t= A*[x;y;1]/(C*[x;y;1]);
             minimoi =  min(floor(t(1)), minimoi);
             minimoj = min(floor(t(2)), minimoj);
-        end
+        %end
     end
 end
 if minimoi < 0
@@ -97,13 +115,14 @@ end
 
 for x = 1:nRows
     for y = 1:nCols
-        if(bwImage(x, y) == 0)
             t= A*[x;y;1]/(C*[x;y;1]);
             i =  floor(t(1));
             j = floor(t(2));
             
             transformedImage(i + minimoi, j + minimoj) = 0;
-        end
+            transformedImageRGB(i + minimoi, j + minimoj,1) = rgbImageOriginalSize(i,j,1);
+            transformedImageRGB(i + minimoi, j + minimoj,2) = rgbImageOriginalSize(i,j,2);
+            transformedImageRGB(i + minimoi, j + minimoj,3) = rgbImageOriginalSize(i,j,3);
     end
 end
 

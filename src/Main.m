@@ -11,7 +11,7 @@ disp('Limpando memória..');
 
 %% Attributes
 dirImage = '..\base\iPhone4\';
-output = '../output/';
+output = 'C:\dev\perspective\svn\src\temp\';
 debug = 0;
 con = 8;
 saveImages = 1;
@@ -40,17 +40,17 @@ len = length(tifffiles);
 
 disp(['Achou ' int2str(len) ' imagens']);
 
-for k = 2:len
+for k = 1:len
 
 disp(' ');
 disp(['Iniciando processamento de ' tifffiles(k).name '...']);
  
-filename = [dirImage '/' tifffiles(k).name];
-%filename = [dirImage '\IMG_1281.JPG'];
+%filename = [dirImage '/' tifffiles(k).name];
+filename = [dirImage '\IMG_1257.JPG'];
 
 % Preprocessamento
 disp(['Iniciando Preprocessamento']);
-[rgbImage grayImage bwImage bwImageOriginalSize edgeImage labelledImage props numComps] = PreProcessImage(filename, con, edgeAlg, prop1, prop2, scale);
+[rgbImage rgbImageOriginalSize grayImage bwImage bwImageOriginalSize edgeImage labelledImage props numComps] = PreProcessImage(filename, con, edgeAlg, prop1, prop2, scale);
 disp(['Preprocessamento ok']);
 
 % Debug
@@ -88,12 +88,20 @@ end
 %save workspaceWorkspace.mat
 
 if ~isempty(Hx) && ~isempty(Hy)
-    transformedImage = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, scale);
+    [transformedImage transformedImageRGB] = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, rgbImageOriginalSize, scale);
 
-    disp(['Salvando Saída:']);
-    out3 = regexprep([output tifffiles(k).name], '.JPG', '_t.tif') ;
-    imwrite(transformedImage, out3,'tif');
-    disp([out2 ' ok']);
+    if(~isempty(transformedImage) && ~isempty(transformedImageRGB))
+        disp(['Salvando Saída:']);
+        out3 = regexprep([output tifffiles(k).name], '.JPG', '_t.tif') ;
+        imwrite(transformedImage, out3,'tif');
+
+        out4 = regexprep([output tifffiles(k).name], '.JPG', '_rgb.tif') ;
+        imwrite(transformedImage, out4,'rgb');
+
+        disp([out2 ' ok']);
+    else
+        disp(['VPs inválidos']);
+    end
 else
      disp(['Não achou VP']);
 end
