@@ -10,6 +10,9 @@ end
 debugHoughSpace = 0;
 debugLines = 1;
 
+
+[imH imW] = size(bwImage);
+
 % Calcula bwImage no espaço de Hough - H
 [H, T, R] = hough(bwImage);
 [nRows nCols] = size(H);
@@ -21,15 +24,13 @@ end
 
 %lines = {};
 it = 1;
-globalMax = 0;
 lines = [];
-w = 1;
-while w > 0.2 && it < 20 
+insertH = 1;
+insertV = 1;
+wThreshold = 0.2;
+while (insertH || insertV) && it < 50 
     [value index] = max(H(:));
     
-    if it == 1
-        globalMax = value;
-    end
     
     col = floor(index/nRows + 1);
     row = mod(index,nRows);
@@ -44,13 +45,30 @@ while w > 0.2 && it < 20
     end
     rho = R(row);
     theta = T(col);
-    w = value/globalMax;
     a = -(cosd(theta) / sind(theta));
     b = rho/sind(theta);
-    s = struct('alpha',a,'beta', b,'weight',w, 'lineLength',value);
+    lineAng = normalizeAngle(atan(a))*180/pi;
     
-    lines = [lines; s];
-
+    
+    insertH = 0;
+    insertV = 0;
+    isHorizontal = abs(lineAng) <= 45;
+    if isHorizontal
+        w = value/imW;
+        if (w > wThreshold)
+            insertH = 1;
+        end
+    else
+        w = value/imH;
+        if (w > wThreshold)
+            insertV = 1;
+        end
+    end
+    
+    if insertV || insertH
+        s = struct('alpha',a,'beta', b,'weight',w, 'lineLen',value);
+        lines = [lines; s];
+    end
     it = it + 1;
 end
 
@@ -72,11 +90,23 @@ if debugLines == 1
                 debugImage(y,x) = 1;
             end
         end
-        
     end
     
     %imwrite(debugImage, ['C:\dev\perspective\svn\src\temp\test.tif'],'tif');
 end
 
+end
+
+function normalizedAngle = normalizeAngle (angle)
+    normalizedAngle = angle;
+    if (mod(2*pi,angle) >= 0)
+        if (~(angle < pi))
+            normalizedAngle = angle - 2*pi;
+        end
+    else
+        if (angle < (-1)*pi)
+            normalizedAngle = angle + 2*pi;
+        end
+    end
 end
 
