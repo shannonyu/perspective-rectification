@@ -38,7 +38,7 @@ ac =  euclideanDist(ax,ay,cx,cy);
 bd =  euclideanDist(bx,by,dx,dy);
 dc =  euclideanDist(dx,dy,cx,cy);
 
-if(ab > 1000 || ac > 1000 || db > 1000 || dc > 1000)
+if(ab > 2000 || ac > 2000 || bd > 2000 || dc > 2000)
     transformedImage = [];
     transformedImageRGB = [];
 else
@@ -89,43 +89,51 @@ C = [l(7:8)' 1];
 transformedImage = ones(nRows * 2, nCols*2);
 transformedImageRGB = ones(nRows * 2, nCols*2, 3);
 
-minimoi = Inf;
-minimoj = Inf;
-
-for x = 1:nRows
-    for y = 1:nCols
-        %if(bwImage(x, y) == 0)
-            t= A*[x;y;1]/(C*[x;y;1]);
-            minimoi =  min(floor(t(1)), minimoi);
-            minimoj = min(floor(t(2)), minimoj);
-        %end
-    end
-end
-if minimoi < 0
-    minimoi = norm(minimoi) + 1;
-else
-    minimoi = 0;
-end
-
-if minimoj <= 0
-    minimoj = norm(minimoj) + 1;
-else
-    minimoj = 0;
-end
+minimoi = 500;%Inf;
+minimoj = 500;%Inf;
 
 for x = 1:nRows
     for y = 1:nCols
             t= A*[x;y;1]/(C*[x;y;1]);
             i =  floor(t(1));
             j = floor(t(2));
-            
-            transformedImage(i + minimoi, j + minimoj) = 0;
-            transformedImageRGB(i + minimoi, j + minimoj,1) = rgbImageOriginalSize(i,j,1);
-            transformedImageRGB(i + minimoi, j + minimoj,2) = rgbImageOriginalSize(i,j,2);
-            transformedImageRGB(i + minimoi, j + minimoj,3) = rgbImageOriginalSize(i,j,3);
+            if i + minimoi <= 0 || j + minimoj <= 0
+                transformedImage = [];
+                transformedImageRGB = [];
+                return; 
+            else
+                transformedImage(i + minimoi, j + minimoj) = 0;
+                transformedImageRGB(i + minimoi, j + minimoj,1) = rgbImageOriginalSize(x,y,1);
+                transformedImageRGB(i + minimoi, j + minimoj,2) = rgbImageOriginalSize(x,y,2);
+                transformedImageRGB(i + minimoi, j + minimoj,3) = rgbImageOriginalSize(x,y,3);
+            end
     end
 end
-
+% if minimoi < 0
+%     minimoi = norm(minimoi) + 1;
+% else
+%     minimoi = 0;
+% end
+% 
+% if minimoj <= 0
+%     minimoj = norm(minimoj) + 1;
+% else
+%     minimoj = 0;
+% end
+% 
+% for x = 1:nRows
+%     for y = 1:nCols
+%             t= A*[x;y;1]/(C*[x;y;1]);
+%             i =  floor(t(1));
+%             j = floor(t(2));
+%             
+%             transformedImage(i + minimoi, j + minimoj) = 0;
+%             transformedImageRGB(i + minimoi, j + minimoj,1) = rgbImageOriginalSize(x,y,1);
+%             transformedImageRGB(i + minimoi, j + minimoj,2) = rgbImageOriginalSize(x,y,2);
+%             transformedImageRGB(i + minimoi, j + minimoj,3) = rgbImageOriginalSize(x,y,3);
+%     end
+% end
+transformedImageRGB = uint8(transformedImageRGB);
 % imshow(image);
 % imwrite(image, 'C:\dev\perspective\svn\src\temp\nasceu.tif','tif');
 % imwrite(bwImage, 'C:\dev\perspective\svn\src\temp\isto.tif','tif');

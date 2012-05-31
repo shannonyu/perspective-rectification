@@ -96,7 +96,7 @@ if ~isempty(Hx) && ~isempty(Hy)
         imwrite(transformedImage, out3,'tif');
 
         out4 = regexprep([output tifffiles(k).name], '.JPG', '_rgb.tif') ;
-        imwrite(transformedImage, out4,'rgb');
+        imwrite(transformedImageRGB, out4,'jpg');
 
         disp([out2 ' ok']);
     else
