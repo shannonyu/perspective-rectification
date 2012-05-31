@@ -4,13 +4,15 @@ clc;
 clear all;
 close all;
 
+addpath('./util');
+
 disp('Limpando memória..');
 
 
 %% Attributes
 dirImage = '..\base\iPhone4\';
 filename = '..\base\iPhone4\IMG_1255.JPG';
-output = 'C:\Users\robson\Desktop\pi_prj\svn\src\temp\';
+output = '../output';
 debug = 0;
 con = 8;
 saveImages = 1;

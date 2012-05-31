@@ -1,14 +1,19 @@
 function [H V] = VPDetection(lines, bwImage)
 
-clusters = METODO_PEGAR_CLUSTERS();
+%% Clustering for vanishing point detection
+[nP intersections] = CalculateLineIntersections(lines);
+if (nP > 0)
+    nClusters = max(ceil(log(nP)),10);
+    [idx, clusters] = kmeans(intersections, nClusters);
+end
 
-[Hindirect Vindirect] = PEGAR_VP_METODO_DIRETO();
+%% Vanishing point detection and selection
+[Hindirect Vindirect] = VPDetectionDirect(idx, clusters);
 
-[Hdirect Vdirect] = VPDetectionIndirect(clusters, lines, bwImage);
+%[Hdirect Vdirect] = VPDetectionIndirect(clusters, lines, bwImage);
 
-H = 0.5 * Hindirect + 0.5 * Hdirect;
-V = 0.5 * Vindirect + 0.5 * Vdirect;
+%H = 0.5 * Hindirect + 0.5 * Hdirect;
+%V = 0.5 * Vindirect + 0.5 * Vdirect;
 
 
 end
-
