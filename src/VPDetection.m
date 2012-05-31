@@ -10,6 +10,7 @@ if (nP > 0)
     clear clusters;
     clear idx;
     nClusters = max(ceil(log(nP)),10);
+
     [idx, clusters] = kmeans(intersections, nClusters, 'Replicates',...
         ceil(nP/2), 'EmptyAction', 'drop');
     

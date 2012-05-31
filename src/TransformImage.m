@@ -1,5 +1,5 @@
 function transformedImage =  TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, scale)
-load workspaceWorkspace.mat
+%load workspaceWorkspace.mat
 
 
 [nRows  nCols] = size(bwImage);
@@ -79,7 +79,7 @@ for x = 1:nRows
             t= A*[x;y;1]/(C*[x;y;1]);
             i =  floor(t(1) + 1000);
             j = floor(t(2) + 1000);
-            image(i,j) = 0;
+            transformedImage(i,j) = 0;
         end
     end
 end
