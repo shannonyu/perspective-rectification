@@ -12,14 +12,14 @@ disp('Limpando memória..');
 %% Attributes
 dirImage = '..\base\iPhone4\';
 filename = '..\base\iPhone4\IMG_1255.JPG';
-output = '../output';
+output = 'C:\dev\perspective\svn\src\temp\';
 debug = 0;
 con = 8;
 saveImages = 1;
 edgeAlg = 'canny';
 prop1 = 'BoundingBox'; 
 prop2 = 'Eccentricity';
-scale = 0.5;
+scale = 0.25;
 
 %% Flow
 disp(['Configuração de execução corrente:']);
@@ -41,13 +41,13 @@ len = length(tifffiles);
 
 disp(['Achou ' int2str(len) ' imagens']);
 
-for k = 1:len
+for k = 52:len
 
 disp(' ');
 disp(['Iniciando processamento de ' tifffiles(k).name '...']);
  
- filename = [dirImage '/' tifffiles(k).name];
-% filename = [dirImage '\IMG_1255.JPG'];
+filename = [dirImage '/' tifffiles(k).name];
+%filename = [dirImage '\IMG_1300.JPG'];
 
 % Preprocessamento
 disp(['Iniciando Preprocessamento']);
@@ -85,7 +85,7 @@ end
 % save workspaceWorkspace.mat
 
 %Vanishing Point Detection
-[H V] = VPDetection(lines, bwImage);
+[Hx Hy] = VPDetection(lines, bwImage, edgeImage);
 
 %Second Stage
 %HorizontalTextLineDetection(LabelledImage, Props, numComps, GrayImage, verticalLines);
