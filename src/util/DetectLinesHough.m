@@ -47,7 +47,7 @@ while w > 0.2 && it < 20
     w = value/globalMax;
     a = -(cosd(theta) / sind(theta));
     b = rho/sind(theta);
-    s = struct('alpha',a,'beta', b,'weight',w);
+    s = struct('alpha',a,'beta', b,'weight',w, 'lineLength',value);
     
     lines = [lines; s];
 
