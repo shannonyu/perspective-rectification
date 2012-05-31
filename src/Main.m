@@ -12,7 +12,7 @@ disp('Limpando memória..');
 %% Attributes
 dirImage = '..\base\iPhone4\';
 filename = '..\base\iPhone4\IMG_1255.JPG';
-output = 'C:\dev\perspective\svn\src\temp\';
+output = '../output/';
 debug = 0;
 con = 8;
 saveImages = 1;
