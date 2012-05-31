@@ -1,5 +1,4 @@
-function transformedImage = TransformImage(Hx, Hy, Vx, Vy, bwImage)
-
+function transformedImage =  TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, scale)
 load workspaceWorkspace.mat
 
 
@@ -35,6 +34,59 @@ dx = V2;
 dy = dx * tand(theta)  + b1;
 
 drawquadrilate(ax, ay, bx, by, cx, cy, dx, dy);
+
+Xmin = min([ax, bx, cx, dx]);
+Ymin = min([ay, by, cy, dy]);
+
+Xmax = max([ax, bx, cx, dx]);
+Ymax = max([ay, by, cy, dy]);
+
+transformedImage = transform(Xmin/scale, Ymin/scale, Xmax/scale,  Ymax/scale, ax/scale, ay/scale, bx/scale, by/scale, cx/scale, cy/scale, dx/scale, dy/scale, bwImageOriginalSize);
+
+end
+
+function transformedImage = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImage)
+
+% hold off
+% axis([Ymin*1.5 Ymax*1.5 Xmin*1.5 Xmax*1.5]);
+[nRows nCols] = size(bwImage);
+
+X = [ay; cy; dy; by;];
+Y = [ax; cx; dx; bx];
+
+% plot([X;X(1)],[Y;Y(1)],'r')
+% hold
+% plot([0 0 640 640 0], [0 480 480 0 0],'b')
+%axis([ -100 900 -100 580 ])
+Yp=[Xmin;   Xmin; Xmax; Xmax];
+Xp=[Ymin; Ymax; Ymax;  Ymin];
+B = [ X Y ones(size(X)) zeros(4,3)        -X.*Xp -Y.*Xp ...
+      zeros(4,3)        X Y ones(size(X)) -X.*Yp -Y.*Yp ];
+B = reshape (B', 8 , 8 )';
+D = [ Xp , Yp ];
+D = reshape (D', 8 , 1 );
+l = inv(B' * B) * B' * D;
+A = reshape([l(1:6)' 0 0 1 ],3,3)';
+C = [l(7:8)' 1];
+
+image = ones(nRows * 2, nCols*2);
+
+
+
+for x = 1:nRows
+    for y = 1:nCols
+        if(bwImage(x, y) == 0)
+            t= A*[x;y;1]/(C*[x;y;1]);
+            i =  floor(t(1) + 1000);
+            j = floor(t(2) + 1000);
+            image(i,j) = 0;
+        end
+    end
+end
+
+imshow(image);
+imwrite(image, 'C:\dev\perspective\svn\src\temp\nasceu.tif','tif');
+imwrite(bwImage, 'C:\dev\perspective\svn\src\temp\isto.tif','tif');
 
 end
 

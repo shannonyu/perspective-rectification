@@ -1,7 +1,10 @@
 
-function [rgbImage grayImage bwImage edgeImage labelledImage props numComps] = PreProcessImage( fileName, con, edgeAlg, prop1, prop2, scale )
+function [rgbImage grayImage bwImage bwImageOriginalSize edgeImage labelledImage props numComps] = PreProcessImage( fileName, con, edgeAlg, prop1, prop2, scale )
 
 rgbImage = imread(fileName);
+grayImage = rgb2gray(rgbImage);
+bwImageOriginalSize = BlockOtsu( grayImage );
+
 rgbImage = imresize(rgbImage, scale);
 grayImage = rgb2gray(rgbImage);
 bwImage = BlockOtsu( grayImage );

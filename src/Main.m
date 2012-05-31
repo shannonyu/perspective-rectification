@@ -46,12 +46,12 @@ for k = 1:len
 disp(' ');
 disp(['Iniciando processamento de ' tifffiles(k).name '...']);
  
-%filename = [dirImage '/' tifffiles(k).name];
-filename = [dirImage '\IMG_1281.JPG'];
+filename = [dirImage '/' tifffiles(k).name];
+%filename = [dirImage '\IMG_1281.JPG'];
 
 % Preprocessamento
 disp(['Iniciando Preprocessamento']);
-[rgbImage grayImage bwImage edgeImage labelledImage props numComps] = PreProcessImage(filename, con, edgeAlg, prop1, prop2, scale);
+[rgbImage grayImage bwImage bwImageOriginalSize edgeImage labelledImage props numComps] = PreProcessImage(filename, con, edgeAlg, prop1, prop2, scale);
 disp(['Preprocessamento ok']);
 
 % Debug
@@ -88,7 +88,7 @@ end
 [Hx Hy Vx Vy] = VPDetection(lines, bwImage, edgeImage);
 %save workspaceWorkspace.mat
 
-transformedImage = TransformImage(Hx, Hy, Vx, Vy, bwImage);
+transformedImage = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, scale);
 
 %Second Stage
 %HorizontalTextLineDetection(LabelledImage, Props, numComps, GrayImage, verticalLines);
