@@ -1,4 +1,7 @@
-function [Hx Hy] = VPDetection(lines, bwImage, edgeImage)
+function [Hx Hy Vx Vy] = VPDetection(lines, bwImage, edgeImage)
+
+Vx = Inf;
+Vy = Inf;
 
 [nRows nCols] = size(bwImage);
 %% Clustering for vanishing point detection

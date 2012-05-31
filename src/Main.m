@@ -41,13 +41,13 @@ len = length(tifffiles);
 
 disp(['Achou ' int2str(len) ' imagens']);
 
-for k = 52:len
+for k = 1:len
 
 disp(' ');
 disp(['Iniciando processamento de ' tifffiles(k).name '...']);
  
-filename = [dirImage '/' tifffiles(k).name];
-%filename = [dirImage '\IMG_1300.JPG'];
+%filename = [dirImage '/' tifffiles(k).name];
+filename = [dirImage '\IMG_1281.JPG'];
 
 % Preprocessamento
 disp(['Iniciando Preprocessamento']);
@@ -85,7 +85,10 @@ end
 % save workspaceWorkspace.mat
 
 %Vanishing Point Detection
-[Hx Hy] = VPDetection(lines, bwImage, edgeImage);
+[Hx Hy Vx Vy] = VPDetection(lines, bwImage, edgeImage);
+%save workspaceWorkspace.mat
+
+transformedImage = TransformImage(Hx, Hy, Vx, Vy, bwImage);
 
 %Second Stage
 %HorizontalTextLineDetection(LabelledImage, Props, numComps, GrayImage, verticalLines);
