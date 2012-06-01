@@ -82,7 +82,8 @@ B = [ X Y ones(size(X)) zeros(4,3)        -X.*Xp -Y.*Xp ...
 B = reshape (B', 8 , 8 )';
 D = [ Xp , Yp ];
 D = reshape (D', 8 , 1 );
-l = inv(B' * B) * B' * D;
+%l = inv(B' * B) * B' * D;
+l = (B' * B) \ B' * D;
 A = reshape([l(1:6)' 0 0 1 ],3,3)';
 C = [l(7:8)' 1];
 
@@ -92,23 +93,61 @@ transformedImageRGB = ones(nRows * 2, nCols*2, 3);
 minimoi = 500;%Inf;
 minimoj = 500;%Inf;
 
+corner_tl = 0;
+corner_tr = 0;
+corner_bl = 0;
+corner_br = 0;
+
 for x = 1:nRows
     for y = 1:nCols
-            t= A*[x;y;1]/(C*[x;y;1]);
-            i =  floor(t(1));
-            j = floor(t(2));
-            if i + minimoi <= 0 || j + minimoj <= 0
-                transformedImage = [];
-                transformedImageRGB = [];
-                return; 
+        t= A*[x;y;1]/(C*[x;y;1]);
+        i =  floor(t(1));
+        j = floor(t(2));
+        if i + minimoi <= 0 || j + minimoj <= 0
+            transformedImage = [];
+            transformedImageRGB = [];
+            return; 
+        else
+            xt = i + minimoi;
+            yt = j+minimoj;
+            transformedImage(xt, yt) = bwImageOriginalSize(x,y);
+            transformedImageRGB(xt, yt,1) = rgbImageOriginalSize(x,y,1);
+            transformedImageRGB(xt, yt,2) = rgbImageOriginalSize(x,y,2);
+            transformedImageRGB(xt, yt,3) = rgbImageOriginalSize(x,y,3);
+            
+            if x == 1 && y == 1
+                corner_tl = [xt yt];
             else
-                transformedImage(i + minimoi, j + minimoj) = 0;
-                transformedImageRGB(i + minimoi, j + minimoj,1) = rgbImageOriginalSize(x,y,1);
-                transformedImageRGB(i + minimoi, j + minimoj,2) = rgbImageOriginalSize(x,y,2);
-                transformedImageRGB(i + minimoi, j + minimoj,3) = rgbImageOriginalSize(x,y,3);
+                if x == 1 && y == nCols
+                    corner_bl = [xt yt];
+                else
+                    if x == nRows && y == 1
+                        corner_tr = [xt yt];
+                    else
+                        if x == nRows && y == nCols
+                            corner_br = [xt yt];
+                        end
+                    end
+                end
             end
+            
+            
+        end
     end
 end
+
+topLimit = max(corner_tl, corner_tr);
+bottomLimit = min(corner_bl, corner_br);
+leftLimit = max(corner_tl, corner_bl);
+rightLimit = min(corner_tr, corner_br);
+
+croppedWidth = rightLimit(1) - leftLimit(1);
+croppedHeight = bottomLimit(2) - topLimit(2);
+
+croppedImageRGB = zeros(croppedWidth,croppedHeight,3);
+croppedImageRGB = transformedImageRGB(leftLimit(1):rightLimit(1), topLimit(2):bottomLimit(2),:);
+croppedImageRGB = uint8(croppedImageRGB);
+
 % if minimoi < 0
 %     minimoi = norm(minimoi) + 1;
 % else
