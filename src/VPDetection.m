@@ -1,5 +1,9 @@
 function [Hx Hy Vx Vy] = VPDetection(lines, bwImage, edgeImage)
 
+% if(nargin == 0)
+%     load workspaceWorkspace.mat;
+% end
+
 Vx = Inf;
 Vy = Inf;
 
@@ -52,6 +56,14 @@ if (nP > 0)
     else
         Hx = (HxIndirect + HxDirect)/2;
         Hy = (HyIndirect + HyDirect)/2;
+        
+        if(abs(Hx) < 1000)
+            if(Hx < 0)
+                Hx = Hx - 5000;
+            else
+                Hx = Hx + 2000;
+            end
+        end
     end
 else
     Hx = [];

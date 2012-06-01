@@ -19,7 +19,7 @@ b1  = Hy  - Hx * tand(theta);
 
 
 V1 = centroX - r;
-V2 = centroX + r;
+V2 = (centroX + r);
 
 ax = V1;
 ay = ax * tand(-theta)  + b2;
@@ -51,7 +51,7 @@ dc =  euclideanDist(dx,dy,cx,cy);
     Xmax = max([ax, bx, cx, dx]);
     Ymax = max([ay, by, cy, dy]);
 
-    [transformedImage transformedImageRGB croppedImageRGB] = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImageOriginalSize, rgbImageOriginalSize);
+    [transformedImage transformedImageRGB croppedImageRGB] = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImage, rgbImageOriginalSize);
 % end
 end
 
@@ -62,7 +62,7 @@ function d = euclideanDist(x1,y1,x2,y2)
 
 end
 
-function [transformedImage transformedImageRGB croppedImageRGB] = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImageOriginalSize, rgbImageOriginalSize)
+function [transformedImage transformedImageRGB croppedImageRGB] = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImage, rgbImageOriginalSize)
 
 % hold off
 % axis([Ymin*1.5 Ymax*1.5 Xmin*1.5 Xmax*1.5]);
@@ -88,7 +88,7 @@ l = inv(B' * B) * B' * D;
 A = reshape([l(1:6)' 0 0 1 ],3,3)';
 C = [l(7:8)' 1];
 
-% transformedImage = ones(nRows * 2, nCols*2);
+transformedImage = ones(nRows * 3, nCols*3);
 transformedImageRGB = zeros(nRows * 3, nCols*3, 3);
 
 minimoi = Inf;
@@ -131,6 +131,9 @@ for x = 1:0.5:nRows
 		
 		xt = i + minimoi;
 		yt = j + minimoj;
+        if (bwImage(round(x),round(y)) == 0 )
+            transformedImage(xt, yt) = 0;
+        end
 		
 		transformedImageRGB(xt, yt,1) =  rgbImageOriginalSize(round(x),round(y),1);
 		transformedImageRGB(xt, yt,2) =  rgbImageOriginalSize(round(x),round(y),2);
@@ -167,7 +170,7 @@ croppedImageRGB = transformedImageRGB(leftLimit:rightLimit, topLimit:bottomLimit
 croppedImageRGB = uint8(croppedImageRGB);
 
 transformedImageRGB = uint8(transformedImageRGB);
-transformedImage = [];
+% transformedImage = [];
 % imshow(image);
 % imwrite(image, 'C:\dev\perspective\svn\src\temp\nasceu.tif','tif');
 % imwrite(bwImage, 'C:\dev\perspective\svn\src\temp\isto.tif','tif');
