@@ -45,8 +45,8 @@ for k = 1:len
 disp(' ');
 disp(['Iniciando processamento de ' tifffiles(k).name '...']);
  
-%filename = [dirImage '/' tifffiles(k).name];
-filename = [dirImage '\IMG_1257.JPG'];
+filename = [dirImage '/' tifffiles(k).name];
+%filename = [dirImage '\IMG_1257.JPG'];
 
 % Preprocessamento
 disp(['Iniciando Preprocessamento']);
@@ -88,12 +88,12 @@ end
 %save workspaceWorkspace.mat
 
 if ~isempty(Hx) && ~isempty(Hy)
-    [transformedImage transformedImageRGB] = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, rgbImageOriginalSize, scale);
+    [transformedImage transformedImageRGB] = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, rgbImage, scale);
 
-    if(~isempty(transformedImage) && ~isempty(transformedImageRGB))
+    if(~isempty(transformedImageRGB))
         disp(['Salvando Saída:']);
-        out3 = regexprep([output tifffiles(k).name], '.JPG', '_t.tif') ;
-        imwrite(transformedImage, out3,'tif');
+%         out3 = regexprep([output tifffiles(k).name], '.JPG', '_t.tif') ;
+%         imwrite(transformedImage, out3,'tif');
 
         out4 = regexprep([output tifffiles(k).name], '.JPG', '_rgb.tif') ;
         imwrite(transformedImageRGB, out4,'jpg');
