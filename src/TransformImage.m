@@ -84,11 +84,12 @@ B = reshape (B', 8 , 8 )';
 D = [ Xp , Yp ];
 D = reshape (D', 8 , 1 );
 l = inv(B' * B) * B' * D;
+%l = (B' * B) \ B * D;
 A = reshape([l(1:6)' 0 0 1 ],3,3)';
 C = [l(7:8)' 1];
 
 % transformedImage = ones(nRows * 2, nCols*2);
-transformedImageRGB = zeros(nRows * 3, nCols*2, 3);
+transformedImageRGB = zeros(nRows * 3, nCols*3, 3);
 
 minimoi = Inf;
 minimoj = Inf;
@@ -122,18 +123,18 @@ else
     minimoj = 0;
 end
 
-for x = 1:nRows
-    for y = 1:nCols
-		t= A*[x;y;1]/(C*[x;y;1]);
-		i =  floor(t(1));
-		j = floor(t(2));
+for x = 1:0.5:nRows
+    for y = 1:0.5:nCols
+            t= A*[x;y;1]/(C*[x;y;1]);
+            i =  max(floor(t(1)),1);
+            j = max(floor(t(2)),1);
 		
 		xt = i + minimoi;
 		yt = j + minimoj;
 		
-		transformedImageRGB(xt, yt,1) = rgbImageOriginalSize(x,y,1);
-		transformedImageRGB(xt, yt,2) = rgbImageOriginalSize(x,y,2);
-		transformedImageRGB(xt, yt,3) = rgbImageOriginalSize(x,y,3);
+		transformedImageRGB(xt, yt,1) =  rgbImageOriginalSize(round(x),round(y),1);
+		transformedImageRGB(xt, yt,2) =  rgbImageOriginalSize(round(x),round(y),2);
+		transformedImageRGB(xt, yt,3) =  rgbImageOriginalSize(round(x),round(y),3);
 		
 		if x == 1 && y == 1
                 corner_tl = [xt yt];

@@ -10,7 +10,7 @@ disp('Limpando memória..');
 
 
 %% Attributes
-dirImage = '..\base\iPhone4\';
+dirImage = '..\base\Selected\';
 output = 'C:\dev\perspective\svn\src\temp\';
 debug = 0;
 con = 8;
@@ -88,15 +88,15 @@ end
 %save workspaceWorkspace.mat
 
 if ~isempty(Hx) && ~isempty(Hy)
-    [transformedImage transformedImageRGB] = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, rgbImage, scale);
+    [transformedImage transformedImageRGB croppedImageRGB] = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, rgbImage, scale);
 
-    if(~isempty(transformedImageRGB))
+    if(~isempty(croppedImageRGB))
         disp(['Salvando Saída:']);
 %         out3 = regexprep([output tifffiles(k).name], '.JPG', '_t.tif') ;
 %         imwrite(transformedImage, out3,'tif');
 
         out4 = regexprep([output tifffiles(k).name], '.JPG', '_rgb.tif') ;
-        imwrite(transformedImageRGB, out4,'jpg');
+        imwrite(croppedImageRGB, out4,'jpg');
 
         disp([out2 ' ok']);
     else
