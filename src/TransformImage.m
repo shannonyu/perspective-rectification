@@ -1,4 +1,4 @@
-function [transformedImage transformedImageRGB] = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, rgbImageOriginalSize, scale)
+function [transformedImage transformedImageRGB croppedImageRGB] = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, rgbImageOriginalSize, scale)
 %load workspaceWorkspace.mat
 
 
@@ -51,7 +51,7 @@ dc =  euclideanDist(dx,dy,cx,cy);
     Xmax = max([ax, bx, cx, dx]);
     Ymax = max([ay, by, cy, dy]);
 
-    [transformedImage transformedImageRGB] = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImageOriginalSize, rgbImageOriginalSize);
+    [transformedImage transformedImageRGB croppedImageRGB] = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImageOriginalSize, rgbImageOriginalSize);
 % end
 end
 
@@ -62,7 +62,7 @@ function d = euclideanDist(x1,y1,x2,y2)
 
 end
 
-function [transformedImage transformedImageRGB] = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImageOriginalSize, rgbImageOriginalSize)
+function [transformedImage transformedImageRGB croppedImageRGB] = transform(Xmin, Ymin, Xmax,  Ymax, ax, ay, bx, by, cx, cy, dx, dy, bwImageOriginalSize, rgbImageOriginalSize)
 
 % hold off
 % axis([Ymin*1.5 Ymax*1.5 Xmin*1.5 Xmax*1.5]);
@@ -124,14 +124,47 @@ end
 
 for x = 1:nRows
     for y = 1:nCols
-            t= A*[x;y;1]/(C*[x;y;1]);
-            i =  floor(t(1));
-            j = floor(t(2));
-            transformedImageRGB(i + minimoi, j + minimoj,1) = rgbImageOriginalSize(x,y,1);
-            transformedImageRGB(i + minimoi, j + minimoj,2) = rgbImageOriginalSize(x,y,2);
-            transformedImageRGB(i + minimoi, j + minimoj,3) = rgbImageOriginalSize(x,y,3);
+		t= A*[x;y;1]/(C*[x;y;1]);
+		i =  floor(t(1));
+		j = floor(t(2));
+		
+		xt = i + minimoi;
+		yt = j + minimoj;
+		
+		transformedImageRGB(xt, yt,1) = rgbImageOriginalSize(x,y,1);
+		transformedImageRGB(xt, yt,2) = rgbImageOriginalSize(x,y,2);
+		transformedImageRGB(xt, yt,3) = rgbImageOriginalSize(x,y,3);
+		
+		if x == 1 && y == 1
+                corner_tl = [xt yt];
+		else
+			if x == 1 && y == nCols
+				corner_bl = [xt yt];
+			else
+				if x == nRows && y == 1
+					corner_tr = [xt yt];
+				else
+					if x == nRows && y == nCols
+						corner_br = [xt yt];
+					end
+				end
+			end
+		end
     end
 end
+
+topLimit = max(corner_tl(2), corner_tr(2));
+bottomLimit = min(corner_bl(2), corner_br(2));
+leftLimit = max(corner_tl(1), corner_bl(1));
+rightLimit = min(corner_tr(1), corner_br(1));
+
+croppedWidth = rightLimit - leftLimit;
+croppedHeight = bottomLimit - topLimit;
+
+croppedImageRGB = zeros(croppedWidth,croppedHeight,3);
+croppedImageRGB = transformedImageRGB(leftLimit:rightLimit, topLimit:bottomLimit,:);
+croppedImageRGB = uint8(croppedImageRGB);
+
 transformedImageRGB = uint8(transformedImageRGB);
 transformedImage = [];
 % imshow(image);
