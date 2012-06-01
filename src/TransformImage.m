@@ -110,7 +110,7 @@ for x = 1:(nRows/10)
 %             end
     end
 end
-if minimoi < 0
+if minimoi <= 0
     minimoi = norm(minimoi) + 1;
 else
     minimoi = 0;
