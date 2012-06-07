@@ -31,13 +31,6 @@ if (nP > 0)
 
     directProfit = VPDirect(clusters, lines, bwImage, edgeImage); % menor eh melhor
 
-%[Hdirect Vdirect] = VPDetectionIndirect(clusters, lines, bwImage);
-    %H = 0.5 * Hindirect + 0.5 * Hdirect;
-    %V = 0.5 * Vindirect + 0.5 * Vdirect;
-
-%     H = 0.5 * Hindirect + 0.5 * Hdirect;
-%     V = 0.5 * Vindirect + 0.5 * Vdirect;
-
     [value index] = max(indirectProfit);
 
     HxIndirect = clusters(index,1);
@@ -48,23 +41,8 @@ if (nP > 0)
     HxDirect = clusters(index,1);
     HyDirect = clusters(index,2);
 
-    d = euclideanDist(HxIndirect, HyIndirect, HxDirect, HyDirect);
-    
-    if(d > 1000)
-        Hx = HxIndirect;
-        Hy = HyIndirect;
-    else
-        Hx = (HxIndirect + HxDirect)/2;
-        Hy = (HyIndirect + HyDirect)/2;
-        
-        if(abs(Hx) < 1000)
-            if(Hx < 0)
-                Hx = Hx - 5000;
-            else
-                Hx = Hx + 2000;
-            end
-        end
-    end
+    % d = euclideanDist(HxIndirect, HyIndirect, HxDirect, HyDirect);
+  
 else
     Hx = [];
     Hy = [];    

@@ -8,7 +8,7 @@ close all;
 addpath('./util');
 
 %% Setup
-dirImage = '..\base\iPhone4\';
+dirImage = '..\base\imgs\';
 imageExt = '/*.JPG';
 output = './output/';
 debugDirectory = './debug/';
@@ -39,6 +39,7 @@ len = length(imageFiles);
 
 disp([int2str(len) ' imagens achadas']);
 
+%% Flow
 for it = 1:len
 
     close all;
@@ -108,5 +109,26 @@ for it = 1:len
 
 %% Third Step - Not Implemented
 
+%% VP Detection
+
+[Hx Hy Vx Vy] = VPDetection(lines, bwImage, edgeImage);
+
+%% Image Transform 
+
+if ~isempty(Hx) && ~isempty(Hy)
+    [transformedImage transformedImageRGB croppedImageRGB] = TransformImage(Hx, Hy, Vx, Vy, bwImage, bwImageOriginalSize, rgbImage, scale);
+
+    if(~isempty(croppedImageRGB))
+        disp(['Salvando Saída:']);
+        out4 = regexprep([output tifffiles(k).name], '.JPG', '_rgb.tif') ;
+        imwrite(croppedImageRGB, out4,'jpg');
+
+        disp([out2 ' ok']);
+    else
+        disp(['VPs inválidos']);
+    end
+else
+     disp(['Não achou VP']);
+end
     
 end
